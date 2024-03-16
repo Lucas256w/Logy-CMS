@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { createPostAPI } from "../../api/apiFunctions";
 
 const CreatePostForm = () => {
   const [info, setInfo] = useState({
@@ -20,9 +21,17 @@ const CreatePostForm = () => {
     setInfo({ ...info, ["published"]: !info.published });
   };
 
-  const handleSubmit = () => {
-    console.log("hello");
+  const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const result = await createPostAPI(info, token);
+      console.log(result);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <>
       <button onClick={() => navigate("/")}>Cancel</button>

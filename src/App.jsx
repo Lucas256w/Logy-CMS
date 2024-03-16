@@ -10,6 +10,7 @@ export const UserContext = createContext({
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const relogin = async () => {
       const token = localStorage.getItem("token");
@@ -21,10 +22,16 @@ function App() {
         }
       } catch (error) {
         console.error("fetch failed: ", error);
+      } finally {
+        setLoading(false);
       }
     };
     relogin();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
