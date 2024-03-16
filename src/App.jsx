@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState, createContext } from "react";
+import { Outlet } from "react-router-dom";
+import Login from "./pages/Login";
 import { reloginAPI } from "./api/apiFunctions";
+
+export const UserContext = createContext({
+  user: {},
+  setUser: () => {},
+});
 
 function App() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
   useEffect(() => {
     const relogin = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-      }
 
       try {
         const result = await reloginAPI(token);
@@ -19,15 +21,22 @@ function App() {
         }
       } catch (error) {
         console.error("fetch failed: ", error);
-        navigate("/login");
       }
     };
     relogin();
-  }, [navigate]);
+  }, []);
 
   return (
     <>
-      <Outlet context={{ user, setUser }} />
+      {user ? (
+        <UserContext.Provider value={{ user, setUser }}>
+          <Outlet />
+        </UserContext.Provider>
+      ) : (
+        <UserContext.Provider value={{ user, setUser }}>
+          <Login setUser={setUser} />
+        </UserContext.Provider>
+      )}
     </>
   );
 }

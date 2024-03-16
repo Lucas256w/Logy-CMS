@@ -1,16 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../App";
 import { loginAPI } from "../../api/apiFunctions";
-import styles from "./LoginForm.module.css";
-import { useOutletContext, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const { setUser } = useOutletContext();
   const [info, setInfo] = useState({
     username: "",
     password: "",
   });
-
-  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const handleInfoChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +21,6 @@ const LoginForm = () => {
       if (result.token) {
         localStorage.setItem("token", result.token);
         setUser({ username: result.username, id: result.id });
-        navigate("/");
       }
     } catch (error) {
       console.error("Fetch failed: ", error);
@@ -32,10 +28,10 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.formContainer}>
+    <div>
+      <div>
         <form onSubmit={handleLogin}>
-          <div className={styles.formGroup}>
+          <div>
             <label htmlFor="username">Username: </label>
             <input
               name="username"
@@ -45,7 +41,7 @@ const LoginForm = () => {
               onChange={handleInfoChange}
             />
           </div>
-          <div className={styles.formGroup}>
+          <div>
             <label htmlFor="password">Password: </label>
             <input
               name="password"

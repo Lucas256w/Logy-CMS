@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -19,7 +20,9 @@ const Posts = () => {
     <>
       {posts.map((post) => (
         <div key={post.id}>
-          <Link to={`post/${post.id}`}>{post.title}</Link>
+          <Link to={`post/${post.id}`}>
+            {post.title} {post.published ? "(Published)" : "(Not Published)"}
+          </Link>
         </div>
       ))}
     </>

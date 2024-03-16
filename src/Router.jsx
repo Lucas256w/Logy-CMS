@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
+import EditPost from "./pages/EditPost";
+import CreatePost from "./pages/CreatePost";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -10,7 +11,8 @@ const Router = () => {
       element: <App />,
       children: [
         { index: true, element: <Homepage /> },
-        { path: "/login", element: <Login /> },
+        { path: "/post/:id", element: <EditPost /> },
+        { path: "/post/create", element: <CreatePost /> },
       ],
     },
   ]);
